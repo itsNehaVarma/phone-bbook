@@ -1,15 +1,14 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Contact } from './models/contact';
-import { HttpService } from './services/http.service';
-
+import { Contact } from '../../models/contact';
+import { HttpService } from '../../services/http.service';
 
 @Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  selector: 'app-add-record',
+  templateUrl: './add-record.component.html',
+  styleUrls: ['./add-record.component.css']
 })
-export class AppComponent {
+export class AddRecordComponent implements OnInit {
   form: FormGroup;
   isSubmitted = false;
   users: any;
@@ -53,4 +52,5 @@ export class AppComponent {
   deleteRecord(index: number) {
     this.users.splice(index, 1);
   }
+
 }

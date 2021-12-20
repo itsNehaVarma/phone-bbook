@@ -92,7 +92,7 @@ describe('AppComponent', () => {
       phone: '1234567890',
       id: 3
     });
-    app.editRecord(updatedUser);
+    app.editRecord(updatedUser, 1);
   });
 
   it('should call deleteRecord', () => {

@@ -1,57 +1,9 @@
-<div class="form-wrapper my-2">
-    <form [formGroup]="form">
-        <div class="form-group">
-            <label>First Name</label>
-            <input type="text" class="form-control" required="required" formControlName="firstName">
-            <!-- <small class="form-text text-danger">
-              {{!form.get('firstName').valid && isSubmitted ? 'First Name is required' : ''}}
-            </small> -->
-        </div>
-        <div class="form-group">
-            <label>Last Name</label>
-            <input type="text" class="form-control" required="required" formControlName="lastName">
-            <!-- <small class="form-text text-danger">
-              {{ !form.get('lastName').valid && isSubmitted ? 'Last Name is required' : ''}}
-            </small> -->
-        </div>
-        <div class="form-group">
-            <label>Phone</label>
-            <input type="text" class="form-control" formControlName="phone">
-            <!-- <small class="form-text text-danger">
-              {{!form.get('phone').valid && isSubmitted ? 'Phone is required' : ''}}
-            </small> -->
-        </div>
-        <div class="form-group">
-            <label>Id</label>
-            <input type="text" class="form-control" formControlName="id">
-            <!-- <small class="form-text text-danger">
-              {{!form.get('id').valid && isSubmitted ? 'Id is required' : ''}}
-            </small> -->
-        </div>
-    </form>
+<div class="site-wrapper">
+    <app-header></app-header>
+    <div class="main-content-wrapper">
+        <main class="main-content">
+            <router-outlet></router-outlet>
+        </main>
+    </div>
+    <app-footer></app-footer>
 </div>
-<div class="d-flex justify-content-end">
-    <button class="btn btn-primary mr-2" (click)="addRecord()">Add</button>
-    <!-- <button class="btn btn-outline-secondary" (click)="onBtnCancelClick()">Cancel</button> -->
-</div>
-
-
-<table>
-    <tr>
-        <th>Id</th>
-        <th>First Name</th>
-        <th>Last Name</th>
-        <th>Phone</th>
-        <th>Action</th>
-    </tr>
-    <tr *ngFor="let user of users; let i = index;">
-        <td>{{user.id}}</td>
-        <td>{{user.firstName}}</td>
-        <td>{{user.lastName}}</td>
-        <td>{{user.phone}}</td>
-        <td>
-            <span (click)="editRecord(user)">Edit</span>
-            <span (click)="deleteRecord(i)">Delete</span>
-        </td>
-    </tr>
-</table>
