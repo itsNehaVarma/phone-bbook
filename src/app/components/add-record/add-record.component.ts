@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Contact } from '../../models/contact';
-import { HttpService } from '../../services/http.service';
+import { ActivatedRoute, Router } from '@angular/router';
+import { LocalStorageService } from 'src/app/services/local-storage.service';
 
 @Component({
   selector: 'app-add-record',
@@ -12,40 +12,55 @@ export class AddRecordComponent implements OnInit {
   form: FormGroup;
   isSubmitted = false;
   users: any;
+  edit = false;
+  id: any | null;
 
-  constructor(private fb: FormBuilder, private httpService: HttpService) {
-    this.form = this.fb.group({
-      firstName: ['', Validators.required],
-      lastName: ['', Validators.required],
-      phone: ['', Validators.required],
-      id: ['', Validators.required]
-    });
+  constructor(private fb: FormBuilder,
+    public localStorage: LocalStorageService,
+    private router: Router,
+    private route: ActivatedRoute) {
+      this.form = this.fb.group({
+        firstName: ['', Validators.required],
+        lastName: ['', Validators.required],
+        phone: ['', Validators.required],
+        id: ['', Validators.required]
+      });
   }
 
   ngOnInit() {
-    this.getAllData();
-  }
-
-  getAllData(): void {
-    this.httpService.getUsers()
-      .subscribe((data) => {
-        this.users = data;
-      });
+    const users = this.localStorage.getLocal('users');
+    this.users = JSON.parse(users || '');
+    this.id = this.route.snapshot.paramMap.get('id');
+    console.log('this.id', this.id)
+    if(this.id){
+      this.edit = true;
+      this.patchValues(this.id);
+    }
   }
 
   addRecord() {
     if (this.form.valid) {
-      
-      // this.users.push(this.form.value);
+      if (this.edit) {
+        console.log('this.form.value', this.form.value)
+        this.users[this.id] = this.form.value;
+      } else {
+        this.users.push(this.form.value);
+      }
+      setTimeout(() => {
+        this.localStorage.setLocal('users', this.users);
+        this.router.navigate(['/all-records']);
+      }, 1000)
     }
   }
 
-  editRecord(user: Contact, index: number) {
+  patchValues(index: any) {
+    const user = JSON.parse(this.localStorage.getLocal('user') || '');
+    this.edit = true;
     this.form.patchValue({
       firstName: user.firstName,
       lastName: user.lastName,
       phone: user.phone,
-      id: user.id     
+      id: user.id
     });
   }
 

@@ -14,7 +14,7 @@ const routes: Routes = [
   {path: '', redirectTo: 'all-records', pathMatch: 'full'},
   {path: 'all-records', component: AllRecordsComponent},
   {path: 'records/add', component: AddRecordComponent},
-  {path: 'records/:id/edit', component: AddRecordComponent},
+  {path: 'records/edit/:id', component: AddRecordComponent},
   {path: '**', component: PageNotFoundComponent}
 ];
 

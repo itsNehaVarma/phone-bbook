@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { LocalStorageService } from 'src/app/services/local-storage.service';
 import { Contact } from '../../models/contact';
 import { HttpService } from '../../services/http.service';
 
@@ -12,27 +13,28 @@ import { HttpService } from '../../services/http.service';
 export class AllRecordsComponent implements OnInit {
   users: any;
 
-  constructor(private httpService: HttpService, private router: Router) {}
+  constructor(private httpService: HttpService, private router: Router, public localStorage: LocalStorageService ) {}
 
   ngOnInit() {
     this.getAllData();
   }
 
   getAllData(): void {
-    this.httpService.getUsers()
+    const users = this.localStorage.getLocal('users');
+    if(users){
+      this.users = JSON.parse(users || '');
+    } else {
+      this.httpService.getUsers()
       .subscribe((data) => {
         this.users = data;
+        this.localStorage.setLocal('users', this.users);
       });
+    }    
   }
 
   editRecord(user: Contact, index: number) {
-    this.router.navigate(['/records/edit'], { queryParams:  {id: index+1}});
-    // this.form.patchValue({
-    //   firstName: user.firstName,
-    //   lastName: user.lastName,
-    //   phone: user.phone,
-    //   id: user.id     
-    // });
+    this.localStorage.setLocal('user', user);
+    this.router.navigate(['/records/edit', index]);
   }
 
   deleteRecord(index: number) {
